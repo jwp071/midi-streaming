@@ -1,0 +1,29 @@
+{
+  "name": "midi-streaming",
+  "version": "1.0.0",
+  "description": "Stream midi via websocket",
+  "main": "main.js",
+  "dependencies": {
+    "ws": "*",
+    "jQuery": "*"
+  },
+  "devDependencies": {
+    "electron": "*",
+    "electron-builder": "*"
+  },
+  "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "predist": "node clean.js",
+    "start": "node_modules/electron/dist/electron ."
+  },
+  "build": {
+    "appId": "midi.streaming",
+    "productName": "Midi Drum Streaming",
+    "linux": {
+      "icon": "icon2.png"
+    }
+  },
+  "author": "Jeff",
+  "license": "ISC"
+}

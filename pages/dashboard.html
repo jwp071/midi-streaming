@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title id="title">Midi Streaming</title>
+
+  <!-- Custom CSS -->
+  <link href="../css/drumStyle.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <h1>Server Page</h1>
+  <a href="client.html">Link to Client Page</a>
+  <p id="generalInfo">information</p>
+
+  <input type="radio" name="streamRadio" id="streamFalse" value="No Stream" onchange="radioSelected()" checked>No Stream
+  <input type="radio" name="streamRadio" id="streamTrue" value="stream" onchange="radioSelected()"> Stream<br><br>
+
+  <button onclick="playInstrument('38')">Snare</button>
+  <button onclick="playInstrument('36')">Bass</button>
+  <button onclick="playInstrument('42')">Closed HH</button>
+  <button onclick="playInstrument('49')">Crash</button>
+  <button onclick="playInstrument('51')">Ride</button>
+  <button onclick="playInstrument('43')">Floor Tom</button>
+  <button onclick="playInstrument('48')">Tom 1</button>
+  <button onclick="playInstrument('45')">Tom 2</button>
+
+  <br><br>
+
+  <label>Volume: <span id="volValue"></span>
+    <input type="range" min="0" max="1" step="0.1" value="0" class="slider" id="volRange" onchange="updateVolVal()">
+  </label>
+
+  <br><br>
+  <table>
+    <tr>
+      <th>Command</th>
+      <th>Note</th>
+      <th>Velocity</th>
+    </tr>
+    <tr>
+      <td id="command"></td>
+      <td id="note"></td>
+      <td id="velocity"></td>
+    </tr>
+  </table>
+
+  <button id="startRecordBtn" onclick="recordMidi()">Record</button>
+  <button id="stopRecordBtn" style="display: none" onclick="stopRecordingMidi()">Stop Recording</button>
+  <p id="midiRecordingMsg"></p>
+
+  <button id="chooseFile" onclick="chooseMidiFile()">Choose File</button>
+
+  <br><br>
+
+  <div id="myProgress">
+    <div id="myBar"></div>
+  </div>
+  <p id="availableMidis"></p>
+
+  <!--Midi Stream JS -->
+  <script src="../js/midi-stream.js"></script>
+  <script src="../js/play-audio.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title id="title">Midi Streaming</title>
+
+    <!-- Custom CSS -->
+    <link href="../css/drumStyle.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <h1>Client Page</h1>
+    <a href="dashboard.html">Link to Server Page</a>
+    <p id="generalInfo">information</p>
+    <button onclick="playTone('38', 100)">Snare</button>
+    <button onclick="playTone('36', 100)">Bass</button>
+    <button onclick="playTone('42', 100)">Closed HH</button>
+    <button onclick="playTone('49', 100)">Crash</button>
+    <button onclick="playTone('51', 100)">Ride</button>
+    <button onclick="playTone('43', 100)">Floor Tom</button>
+    <button onclick="playTone('48', 100)">Tom 1</button>
+    <button onclick="playTone('45', 100)">Tom 2</button>
+    <br><br>
+    <table>
+        <tr>
+          <th>Command</th>
+          <th>Note</th>
+          <th>Velocity</th>
+        </tr>
+        <tr>
+          <td id="command"></td>
+          <td id="note"></td>
+          <td id="velocity"></td>
+        </tr>
+    </table>
+
+    <!--Midi Stream JS -->
+    <script src="../js/client-midi.js"></script>
+    <script src="../js/play-audio.js"></script>
+
+</body>
+
+</html>

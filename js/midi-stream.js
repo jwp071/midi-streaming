@@ -5,8 +5,7 @@ const fs = require('fs');
 const { dialog } = require('electron').remote;
 const sleep = require('../js/sleep.js');
 
-var WEBSOCKET_PORT = 3001
-
+var socketServer = null;
 var streamToClient = false;
 var writeToFile = false;
 var wstream;
@@ -16,42 +15,59 @@ var midiFilesArr = [];
 function radioSelected() {
     console.log(document.getElementById("streamTrue").checked)
     streamToClient = document.getElementById("streamTrue").checked;
+    if (streamToClient) {
+        stream();
+    } else {
+        if (socketServer) {
+            socketServer.close();
+        }
+    }
 }
 
-//WebSocket Server
-var socketServer = new WebSocket.Server({ port: WEBSOCKET_PORT, perMessageDeflate: false });
-socketServer.connectionCount = 0;
-socketServer.on('connection', function (socket, upgradeReq) {
-    socketServer.connectionCount++;
-    console.log(
-        'New WebSocket Connection: ',
-        (upgradeReq || socket.upgradeReq).socket.remoteAddress,
-        (upgradeReq || socket.upgradeReq).headers['user-agent'],
-        '(' + socketServer.connectionCount + ' total)'
-    );
-    document.getElementById("generalInfo").innerText = 'New WebSocket Connection: ' +
-        (upgradeReq || socket.upgradeReq).socket.remoteAddress +
-        (upgradeReq || socket.upgradeReq).headers['user-agent'] +
-        '(' + socketServer.connectionCount + ' total)';
+function stream() {
 
-    socket.on('close', function () {
-        socketServer.connectionCount--;
+    var serverPort = document.getElementById("serverPort").value;
+
+    //WebSocket Server
+    socketServer = new WebSocket.Server({ port: serverPort, perMessageDeflate: false });
+    socketServer.connectionCount = 0;
+    socketServer.on('connection', function (socket, upgradeReq) {
+        socketServer.connectionCount++;
         console.log(
-            'Disconnected WebSocket (' + socketServer.connectionCount + ' total)'
+            'New WebSocket Connection: ',
+            (upgradeReq || socket.upgradeReq).socket.remoteAddress,
+            (upgradeReq || socket.upgradeReq).headers['user-agent'],
+            '(' + socketServer.connectionCount + ' total)'
         );
+        document.getElementById("generalInfo").innerText = 'New WebSocket Connection: ' +
+            (upgradeReq || socket.upgradeReq).socket.remoteAddress +
+            (upgradeReq || socket.upgradeReq).headers['user-agent'] +
+            '(' + socketServer.connectionCount + ' total)';
 
-        document.getElementById("generalInfo").innerText = 'Disconnected WebSocket (' + socketServer.connectionCount + ' total)'
-    });
-});
-socketServer.broadcast = function (data) {
-    socketServer.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(data);
-        }
-    });
-};
+        socket.on('close', function () {
+            socketServer.connectionCount--;
+            console.log(
+                'Disconnected WebSocket (' + socketServer.connectionCount + ' total)'
+            );
 
-console.log('Awaiting WebSocket connections on ws://127.0.0.1:' + WEBSOCKET_PORT + '/');
+            document.getElementById("generalInfo").innerText = 'Disconnected WebSocket (' + socketServer.connectionCount + ' total)'
+        });
+
+        socket.on('message', function incoming(message) {
+            console.log('received: %s', message);
+        });
+
+    });
+    socketServer.broadcast = function (data) {
+        socketServer.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(data);
+            }
+        });
+    };
+
+    console.log('Awaiting WebSocket connections on ws://127.0.0.1:' + serverPort + '/');
+}
 
 var midiAccess = null;
 navigator.requestMIDIAccess().then(onMIDISuccess, onMidiAccessFailure);
@@ -77,7 +93,7 @@ function getMIDIMessage(message) {
     //     console.log(message.data);
     // }
 
-    if (streamToClient) {
+    if (streamToClient && socketServer) {
         socketServer.broadcast(message.data);
     } else {
         convertMidiToAudio(message);

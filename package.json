@@ -8,8 +8,7 @@
     "jQuery": "*"
   },
   "devDependencies": {
-    "electron": "*",
-    "electron-builder": "*"
+    "electron": "*"
   },
   "scripts": {
     "pack": "electron-builder --dir",

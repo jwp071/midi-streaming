@@ -9,19 +9,21 @@
     <title id="title">Midi Streaming</title>
 
     <!-- Custom CSS -->
-    <link href="../css/drumStyle.css" rel="stylesheet">
+    <link href="css/drumStyle.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 </head>
 
 <body>
 
     <h1>Client Page</h1>
-    <a href="dashboard.html">Link to Server Page</a><br><br>
+    <a href="https://jeffpettyjohn.com">Link to Jeff's Homepage</a><br><br>
     
     <button onclick="playTone('38', 100);startAnimation('38')">Snare</button>
     <button onclick="playTone('36', 100);startAnimation('36')">Bass</button>
     <button onclick="playTone('42', 100);startAnimation('42')">Closed HH</button>
-    <button onclick="playTone('49', 100);startAnimation('49')"></button>Crash</button>
+    <button onclick="playTone('49', 100);startAnimation('49')">Crash</button>
     <button onclick="playTone('51', 100);startAnimation('51')">Ride</button>
     <button onclick="playTone('43', 100);startAnimation('43')">Floor Tom</button>
     <button onclick="playTone('48', 100);startAnimation('48')">Tom 1</button>
@@ -29,14 +31,17 @@
     <br><br>
 
     Server IP Address: <input type="text" id="serverIPAddress" value="192.168.1.28"><br>
-    Server Port: <input type="number" id="serverPort" value="3001"><br><br>
+    Server Port: <input type="number" id="serverPort" value="3001"><br>
     <button onclick="connectToServer()">Listen to some sick beats!</button>
     <button onclick="disconnectFromServer()">Disconnect</button>
+
+    <img src="img/drums-free-drumming.jpg">
 
     <br><br>
 
     <p id="generalInfo">information</p>
 
+    <br>
     <table>
         <tr>
           <th>Command</th>
@@ -72,8 +77,9 @@
     </div>
 
     <!--Midi Stream JS -->
-    <script src="../js/client-midi.js"></script>
-    <script src="../js/play-audio.js"></script>
+    <script src="js/sound-mapping.js"></script>
+    <script src="js/client-midi-web.js"></script>
+    <script src="js/play-audio.js"></script>
 
 </body>
 
